@@ -1,114 +1,111 @@
-import pymysql
-import pyodbc
+#Primera prueba de migracion con todos sus funciones
+
+import libraries as lbs 
+import connection
 
 class Table:
-    def __init__(self, name, columns, rows):
-        self.name = name      # Nombre de la tabla
-        self.columns = columns  # Lista de columnas
-        self.rows = rows      # Lista de filas
+    def __init__(self, name : str, columns : list, rows : list):
+        self.name = name 
+        self.columns = columns
+        self.rows = rows
+    def __str__(self):
+        return f"Table (nombre = {self.name}, colums = {self.columns}, row = {self.rows})"    
 
-    def __repr__(self):
-        return f"Table(name={self.name}, columns={self.columns}, rows={len(self.rows)} filas)"
-
-def obtener_tablas_mysql(cursor):
-    """Obtiene todas las tablas de la base de datos MySQL."""
+def get_tables_mysql(cursor):
     cursor.execute("SHOW TABLES")
     return [row[0] for row in cursor.fetchall()]
 
-def obtener_columnas_mysql(cursor, tabla):
-    """Obtiene todas las columnas de una tabla MySQL."""
+def get_colums_mysql(cursor, tabla):
     cursor.execute(f"DESCRIBE {tabla}")
-    return [row[0] for row in cursor.fetchall()]
+    return [ row[0] for row in cursor.fetchall()]
 
-def obtener_datos_mysql(cursor, tabla, columnas):
-    """Obtiene todos los datos de una tabla MySQL."""
-    column_list = ', '.join(columnas)
+def get_data_mysql(cursor,tabla,columns):
+    column_list = ', '.join(columns)
     cursor.execute(f"SELECT {column_list} FROM {tabla}")
     return cursor.fetchall()
 
-def migrar_mysql_a_sqlserver(mysql_config, sqlserver_config):
-    """
-    Migra todas las tablas de una base de datos MySQL a SQL Server.
-
-    Args:
-        mysql_config (dict): Configuración de la conexión MySQL.
-        sqlserver_config (dict): Configuración de la conexión SQL Server.
-    """
+def migrate_mysql_to_sqlserver(mysql_config, sqlserver_config):
     try:
-        # Conexión a MySQL
-        mysql_conn = pymysql.connect(**mysql_config)
-        mysql_cursor = mysql_conn.cursor()
+        #Conexion a mysql
+        mysql_connection =  connection.mysql_connection(mysql_config)
+        mysql_cursor = mysql_connection.cursor()
 
-        # Conexión a SQL Server
-        sqlserver_conn = pyodbc.connect(
-            f"DRIVER={sqlserver_config['driver']};"
-            f"SERVER={sqlserver_config['server']};"
-            f"DATABASE={sqlserver_config['database']};"
-            f"UID={sqlserver_config['user']};"
-            f"PWD={sqlserver_config['password']}"
-        )
-        sqlserver_cursor = sqlserver_conn.cursor()
+        sqlserver_connection = connection.sqlserver_connection(sqlserver_config)
+        sqlserver_cursor = sqlserver_connection.cursor()
 
-        # Lista de objetos Table
-        tablas = []
+        tables = [] # Esto almacenara objetos tipo Table
+        
+        #obtener el nombre de todas las tablas
+        table_names = get_tables_mysql(mysql_cursor)
+        for table_name in table_names:
+            print(f"Cargando datos de la tabla{table_name}")
 
-        # Obtener todas las tablas
-        nombres_tablas = obtener_tablas_mysql(mysql_cursor)
-        for nombre_tabla in nombres_tablas:
-            print(f"Cargando datos de la tabla: {nombre_tabla}")
+            columnas = get_colums_mysql(mysql_cursor, table_name)
+            filas = get_data_mysql(mysql_cursor, table_name, columnas)
 
-            # Obtener columnas y datos
-            columnas = obtener_columnas_mysql(mysql_cursor, nombre_tabla)
-            filas = obtener_datos_mysql(mysql_cursor, nombre_tabla, columnas)
+            # Objeto tipo table:
+            table = Table(name = table_name, columns = columnas, rows = filas)
+            tables.append(table)
+            
+        #migrar datos
+        for table in tables:
+            if not isinstance(table, Table):
+                 raise TypeError(f"Error: {table} no es una instancia válida de Table")
+            else:
+                print(f"Se esta migrando la tabla: {table.name}")
+                columnas = table.columns 
+                filas = table.rows
 
-            # Crear un objeto Table y añadirlo a la lista
-            tabla = Table(name=nombre_tabla, columns=columnas, rows=filas)
-            tablas.append(tabla)
+                column_list = ','.join(columnas)
+                placeholders = ','.join(['?'] * len(columnas))
+                insert_query = f"INSERT INTO {table.name} ({column_list}) VALUES ({placeholders})"
 
-        # Migrar los datos
-        for tabla in tablas:
-            print(f"Migrando tabla: {tabla.name}")
-            columnas = tabla.columns
-            filas = tabla.rows
+                for fila in filas:
+                    sqlserver_cursor.execute(insert_query, fila)
 
-            # Crear consulta dinámica
-            column_list = ', '.join(columnas)
-            placeholders = ', '.join(['?'] * len(columnas))
-            insert_query = f"INSERT INTO {tabla.name} ({column_list}) VALUES ({placeholders})"
+            
+                sqlserver_connection.commit()
 
-            # Insertar datos
-            for fila in filas:
-                sqlserver_cursor.execute(insert_query, fila)
-
-            # Confirmar cambios
-            sqlserver_conn.commit()
-
-        print("Migración completada para todas las tablas.")
     except Exception as e:
-        print(f"Error durante la migración: {e}")
-    finally:
-        # Cerrar conexiones
-        if 'mysql_conn' in locals():
-            mysql_conn.close()
-        if 'sqlserver_conn' in locals():
-            sqlserver_conn.close()
+        print(f"Error durante la migracion: {e}")
 
-# Configuración de la conexión MySQL
-mysql_config = {
-    "host": "tu_host_mysql",
-    "user": "tu_usuario_mysql",
-    "password": "tu_contraseña_mysql",
-    "database": "tu_base_datos_mysql"
+
+        if 'mysql_connection' in locals():
+            mysql_connection.close()
+        if 'sqlserver_connection' in locals():
+            sqlserver_connection.close()
+
+
+
+
+print ("Bienvenido a la APP YOUR DATA BASE!. ")
+print ("Ingresa los datos de tu BD en MYSQL ")
+host = input("host: ")
+user = input("user: ")
+password = input("password: ")
+database = input("database: ")
+
+mysql_config = { #DICCIONARIO CON LOS DATOS DEL USUARIO Y LA BD EN MYSQL
+    'host': host,
+    'user':user,
+    'password':password,
+    'database' : database 
 }
+mysql_connection = connection.mysql_connection(mysql_config)
 
-# Configuración de la conexión SQL Server
-sqlserver_config = {
-    "driver": "ODBC Driver 17 for SQL Server",
-    "server": "tu_servidor_sqlserver",
-    "database": "tu_base_datos_sqlserver",
-    "user": "tu_usuario_sqlserver",
-    "password": "tu_contraseña_sqlserver"
+
+print("") 
+print ("Ahora ingresa los datos de tu BD en SQL Server ")
+server2 = input("Server: ") #DESKTOP-5J8FKMK
+database2 = input("Database: ")
+
+sqlserver_config = { #DICCIONARIO CON LOS DATOS DEL USUARIO Y LA BD EN SQLSERVER
+    'Driver': 'ODBC Driver 17 for SQL Server',
+    'Server': server2,
+    'Database':database2,
+    'Trusted_Connection' : 'yes'   
 }
+sql_server_connection = connection.sqlserver_connection(sqlserver_config)       
 
-# Llamada a la función principal
-migrar_mysql_a_sqlserver(mysql_config, sqlserver_config)
+
+migrate_mysql_to_sqlserver(mysql_config,sqlserver_config)
