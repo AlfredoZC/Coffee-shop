@@ -22,6 +22,55 @@ def get_data_mysql(cursor,tabla,columns):
     cursor.execute(f"SELECT {column_list} FROM {tabla}")
     return cursor.fetchall()
 
+def map_mysql_to_sqlserver(mysql_type):
+# Mapea los tipos de datos de sql:
+    mapping = {
+        'int': 'INT',
+        'tinyint':'SMALLINT',
+        'varchar': 'NVARCHAR',
+        'text':'NVARCHAR(MAX)',
+        'date':'DATE',
+        'datetime': 'DATETIME2',
+        'decimal': 'DECIMAL',
+        'float': 'FLOAT',
+        'boolean': 'BIT',
+    }
+    
+    for key in mapping:
+        if key in mysql_type.lower(): # nos permite una comparacion parcial y no exacta como ==
+            return mapping[key]
+        return mysql_type #No esta mapeado.
+
+    
+def get_primary_key(table_name, mysql_cursor):
+    mysql_cursor.execute(f"SHOW KEYS FROM {table_name} WHERE key_name = PRIMARY ;")
+    primary_key = [row[4] for row in mysql_cursor.fetchall()]
+    return primary_key 
+
+def create_table(mysql_cursor, sqlserver_cursor, table_name):
+    mysql_cursor.execute(f"DESCRIBE {table_name}")
+    primary_key = get_primary_key(table_name,mysql_cursor)
+    columns = mysql_cursor.fetchall()
+
+    sqlserver_query = f"CREATE TABLE {table_name} ( " # Query que necesitaremos. para crear la tabla
+    columndata = []  #Esta lista nos ayudara a guardar los datos para rellenar el query y crear la tabla
+    for column in columns: 
+        column_name = column[0]
+        column_type = map_mysql_to_sqlserver(column[1])
+        nullstuff = "NOT NULL" if column[2] == 'NO'  else "NULL" 
+        extra = "IDENTIFY(1,1)" if "auto_increment" in column[5].lower() else ""
+        columndata.append(f"{column_name} {column_type} {nullstuff} {extra}")
+    
+    if primary_key: # Si no esta vacio ejecutara este codigo
+        primary_key_new = ",".join(primary_key)
+        columndata.append(f",PRIMARY KEY ({primary_key_new})")
+    
+    sqlserver_query += ",\n".join(columndata) + "\n);"
+    print(sqlserver_query)
+    print(f"Creando tabla: {table_name}")
+    sqlserver_cursor.excecute(sqlserver_query)
+   
+
 def migrate_mysql_to_sqlserver(mysql_config, sqlserver_config):
     try:
         #Conexion a mysql

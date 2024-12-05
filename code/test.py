@@ -1,6 +1,3 @@
-#Primera prueba de migracion con todos sus funciones
-
-import libraries as lbs 
 import connection
 
 class Table:
@@ -23,6 +20,57 @@ def get_data_mysql(cursor,tabla,columns):
     column_list = ', '.join(columns)
     cursor.execute(f"SELECT {column_list} FROM {tabla}")
     return cursor.fetchall()
+def map_mysql_to_sqlserver(mysql_type):
+# Mapea los tipos de datos de sql:
+    mapping = {
+        'int': 'INT',
+        'tinyint':'SMALLINT',
+        'varchar': 'NVARCHAR',
+        'text':'NVARCHAR(MAX)',
+        'date':'DATE',
+        'datetime': 'DATETIME2',
+        'decimal': 'DECIMAL',
+        'float': 'FLOAT',
+        'boolean': 'BIT',
+    }
+    
+    for key in mapping:
+        if key in mysql_type.lower(): # nos permite una comparacion parcial y no exacta como ==
+            return mapping[key]
+        return mysql_type #No esta mapeado.
+#----------------------------------------------------------------------------- TABLE CREATION
+def get_primary_key(table_name, mysql_cursor):
+    mysql_cursor.execute(f"SHOW KEYS FROM {table_name} WHERE key_name = 'PRIMARY' ;")
+    primary_key = [row[4] for row in mysql_cursor.fetchall()]
+    return primary_key 
+
+def create_table(mysql_cursor, sqlserver_cursor, table_name):
+    mysql_cursor.execute(f"DESCRIBE {table_name}")
+    primary_key = get_primary_key(table_name,mysql_cursor)
+    columns = mysql_cursor.fetchall()
+    for column in columns:
+        print(column)
+        
+    sqlserver_query = f"CREATE TABLE {table_name} ( " # Query que necesitaremos. para crear la tabla
+    columndata = []  #Esta lista nos ayudara a guardar los datos para rellenar el query y crear la tabla
+    for column in columns: 
+        column_name = column[0]
+        column_type = map_mysql_to_sqlserver(column[1])
+        nullstuff = "NOT NULL" if column[2] == 'NO'  else "NULL" 
+        extra = "IDENTITY(1,1)" if "auto_increment" in column[5].lower() else ""
+        columndata.append(f"{column_name} {column_type} {nullstuff} {extra}")
+        print(f"{column_name} {column_type} {nullstuff} {extra}")
+
+    if primary_key:
+        primary_key_new = ",".join(primary_key)
+        columndata.append(f"PRIMARY KEY ({primary_key_new})")
+    print(columndata)
+    sqlserver_query += ",\n".join(columndata) + "\n);"
+    for data in sqlserver_query:
+        print(data)
+    print(f"Creando tabla: {table_name}")
+   # sqlserver_cursor.execute(sqlserver_query)
+# -------------------------------------------------------------------
 
 def migrate_mysql_to_sqlserver(mysql_config, sqlserver_config):
     try:
@@ -108,4 +156,7 @@ sqlserver_config = { #DICCIONARIO CON LOS DATOS DEL USUARIO Y LA BD EN SQLSERVER
 sql_server_connection = connection.sqlserver_connection(sqlserver_config)       
 
 
-migrate_mysql_to_sqlserver(mysql_config,sqlserver_config)
+mysql_cursor = mysql_connection.cursor()
+sqlserver_cursor = sql_server_connection.cursor()
+
+create_table(mysql_cursor, sqlserver_cursor, 'empleados')
