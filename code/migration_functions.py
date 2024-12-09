@@ -1,4 +1,3 @@
-import libraries as lbs 
 import connection
 
 class Table:
@@ -72,8 +71,9 @@ def create_table(mysql_cursor, sqlserver_cursor, table_name):
     if primary_key:
         primary_key_new = ",".join(primary_key)
         columndata.append(f"PRIMARY KEY ({primary_key_new})")
-    
+
     sqlserver_query += ",\n".join(columndata) + "\n);"
+    print(sqlserver_query)
     print(f"Creando tabla: {table_name}")
     sqlserver_cursor.execute(sqlserver_query)
    
