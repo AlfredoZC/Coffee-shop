@@ -73,9 +73,11 @@ class Interfaz(Frame):
                     
             if len(results)<=4:
                 self.funciones.insert_to(self.tabla2,results[1],results[2],results[3],lista2[1],lista2[2],lista2[3])
+                messagebox.showinfo("Agregar",'Elemento agregado correctamente.')
             else:
                 self.funciones.insert_to2(self.tabla2,results[1],results[2],results[3],results[4],lista2[1],lista2[2],lista2[3],lista2[4])
-            
+                messagebox.showinfo("Agregar",'Elemento agregado correctamente.')
+
         self.limpiar_entrys(self.entrys)
     
     def metodo_agregar(self, tabla):
@@ -187,6 +189,7 @@ class Interfaz(Frame):
             respuesta=messagebox.askquestion("Eliminar","¿Deseas eliminar el registro seleccionado?")
             if respuesta==messagebox.YES:
                 self.funciones.delete(self.table,self.id,valor)
+                messagebox.showinfo("Eliminar",'Elemento eliminado correctamente.')
             else:
                 self.limpiar_entrys(self.entrys)
                 
