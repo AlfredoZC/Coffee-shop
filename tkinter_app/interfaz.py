@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from funciones import *
 class Interfaz(Frame):
     funciones=Funciones()
@@ -60,18 +61,21 @@ class Interfaz(Frame):
         for i in range(len(self.entrys)):
             lista.append(self.entrys[i].get())
         
-        lista2=[]
-        for j in lista:
-            if j.isdigit():
-                lista2.append(int(j))
+        if lista[0]=='':
+            messagebox.showwarning("Agregar",'No introdujo ningún valor.')
+        else:        
+            lista2=[]
+            for j in lista:
+                if j.isdigit():
+                    lista2.append(int(j))
+                else:
+                    lista2.append(j)
+                    
+            if len(results)<=4:
+                self.funciones.insert_to(self.tabla2,results[1],results[2],results[3],lista2[1],lista2[2],lista2[3])
             else:
-                lista2.append(j)
-                
-        if len(results)<=4:
-            self.funciones.insert_to(self.tabla2,results[1],results[2],results[3],lista2[1],lista2[2],lista2[3])
-        else:
-            self.funciones.insert_to2(self.tabla2,results[1],results[2],results[3],results[4],lista2[1],lista2[2],lista2[3],lista2[4])
-        
+                self.funciones.insert_to2(self.tabla2,results[1],results[2],results[3],results[4],lista2[1],lista2[2],lista2[3],lista2[4])
+            
         self.limpiar_entrys(self.entrys)
     
     def metodo_agregar(self, tabla):
@@ -175,9 +179,17 @@ class Interfaz(Frame):
               
     
     def guardar_eliminar(self):
-        valor=int(self.entrys[0].get())
-        self.funciones.delete(self.table,self.id,valor)
-        self.limpiar_entrys(self.entrys)
+        valor1=self.entrys[0].get()
+        if valor1=='':
+            messagebox.showwarning("Eliminar", "No introdujo ningún valor.")
+        else:
+            valor=int(self.entrys[0].get())
+            respuesta=messagebox.askquestion("Eliminar","¿Deseas eliminar el registro seleccionado?")
+            if respuesta==messagebox.YES:
+                self.funciones.delete(self.table,self.id,valor)
+            else:
+                self.limpiar_entrys(self.entrys)
+                
     def metodo_eliminar(self,tabla):
         self.ver_tabla(tabla)
         self.ocultar_mostrarForm(self.interfaz_eliminar,self.Formulario)
