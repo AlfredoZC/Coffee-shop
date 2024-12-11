@@ -12,7 +12,13 @@ class Interfaz(Frame):
         self.master.iconbitmap("coffee-cup.ico")
         self.pack()
         self.objetos()
-        
+    
+    def elemento_vacio(self,cadena):
+        for x in cadena:
+            if not x:
+                return True
+                
+        return False
     #ocultar interfaces
     def ocultar_mostrar(self,bloque_a_ocultar,bloque_a_mostrar):
         if bloque_a_ocultar:
@@ -60,22 +66,25 @@ class Interfaz(Frame):
         
         for i in range(len(self.entrys)):
             lista.append(self.entrys[i].get())
-        
-        if lista[0]=='':
+      
+        comprobar_elemento_vacio=self.elemento_vacio(lista) 
+            
+        if comprobar_elemento_vacio==True:
             messagebox.showwarning("Agregar",'No introdujo ningún valor.')
+            
         else:        
             lista2=[]
             for j in lista:
                 if j.isdigit():
-                    lista2.append(int(j))
+                        lista2.append(int(j))
                 else:
-                    lista2.append(j)
-                    
-            if len(results)<=4:
-                self.funciones.insert_to(self.tabla2,results[1],results[2],results[3],lista2[1],lista2[2],lista2[3])
+                        lista2.append(j)
+                
+            if len(results)<5:
+                self.funciones.insert_to(self.tabla2,results[0],results[1],results[2],results[3],lista2[0],lista2[1],lista2[2],lista2[3])
                 messagebox.showinfo("Agregar",'Elemento agregado correctamente.')
             else:
-                self.funciones.insert_to2(self.tabla2,results[1],results[2],results[3],results[4],lista2[1],lista2[2],lista2[3],lista2[4])
+                self.funciones.insert_to2(self.tabla2,results[0],results[1],results[2],results[3],results[4],lista2[0],lista2[1],lista2[2],lista2[3],lista2[4])
                 messagebox.showinfo("Agregar",'Elemento agregado correctamente.')
 
         self.limpiar_entrys(self.entrys)
@@ -117,14 +126,26 @@ class Interfaz(Frame):
         self.regresar3 = Button(self.Formulario, text="REGRESAR", bg="#Ff0000", command=lambda:self.ocultar_mostrar(self.Formulario,self.interfaz_agregar))
         self.regresar3.place(x=3, y=315, height=35, width=173)
         
-   
+    def obtener_valor(self,*args):
+        self.valorxd=self.cur.get()
+        
     def guardar_modificar(self):
-        valor1=self.entrys[0].get()
-        valor2=self.entrys[1].get()
-        valor3=int(self.entrys[2].get())
+        valor1=self.valorxd
+        valor2=self.entrys[0].get()
+        valor4=self.entrys[1].get()
+        
         campoID=self.idd
-        self.funciones.modificar(self.tabla1,valor1,valor2,campoID,valor3)
-        self.limpiar_entrys(self.entrys)
+        if valor2=='' or valor4=='':
+            messagebox.showinfo("Modificar",'No introdujo valores.')
+        else:
+            valor3=int(self.entrys[1].get())
+            respuesta=messagebox.askquestion("Modificar","¿Deseas modificar el registro seleccionado?")
+            if respuesta==messagebox.YES:
+                self.funciones.modificar(self.tabla1,valor1,valor2,campoID,valor3)
+                messagebox.showinfo("Modificar",'Elemento modificado correctamente.')
+            else:
+                self.limpiar_entrys(self.entrys)
+            
     def metodo_modificar(self,table):
         self.ver_tabla(table)   
         self.ocultar_mostrarForm(self.interfaz_modificar,self.Formulario)
@@ -133,36 +154,38 @@ class Interfaz(Frame):
         
         self.resultados3 = self.funciones.describe(table)
         self.idd=self.resultados3[0]
-        
         self.labels=[]
         self.entrys=[]
-        
-       
-
-        
-         
-        label = Label(self.Formulario, text="Columna")
-        label.place(x=83, y=65)  
+        label = Label(self.Formulario, text="Columnas :")
+        label.place(x=55, y=20)  
         self.labels.append(label)
-        entry1 = Entry(self.Formulario,bg="white")
-        entry1.place(x=5, y=100, height=20, width=170)
-        self.entrys.append(entry1)
+        
+        self.valorxd=None
+        lista_columnas=self.resultados3
+        self.cur=StringVar()
+        self.cur.set(lista_columnas[0])
+        self.cur.trace_add("write",self.obtener_valor)
+       
+        menu=OptionMenu(self.Formulario,self.cur,*lista_columnas)
+        menu.place(x=42,y=50)
+        
+        
         
         
         label2 = Label(self.Formulario, text="Nuevo Valor")
-        label2.place(x=68, y=150)  
+        label2.place(x=50, y=140)  
         self.labels.append(label2)
         entry2 = Entry(self.Formulario,bg="white")
         entry2.place(x=5, y=170, height=20, width=170)
         self.entrys.append(entry2)
         
         label3 = Label(self.Formulario, text="ID")
-        label3.place(x=68, y=220)  
+        label3.place(x=74, y=200)  
         self.labels.append(label3)
         entry3 = Entry(self.Formulario,bg="white")
-        entry3.place(x=5, y=250, height=20, width=170)
+        entry3.place(x=5, y=225, height=20, width=170)
         self.entrys.append(entry3)
-        #Crear el Entry
+        
         
         
         
@@ -182,16 +205,23 @@ class Interfaz(Frame):
     
     def guardar_eliminar(self):
         valor1=self.entrys[0].get()
-        if valor1=='':
+        
+        if valor1 =='':
             messagebox.showwarning("Eliminar", "No introdujo ningún valor.")
         else:
-            valor=int(self.entrys[0].get())
-            respuesta=messagebox.askquestion("Eliminar","¿Deseas eliminar el registro seleccionado?")
-            if respuesta==messagebox.YES:
-                self.funciones.delete(self.table,self.id,valor)
-                messagebox.showinfo("Eliminar",'Elemento eliminado correctamente.')
-            else:
-                self.limpiar_entrys(self.entrys)
+            try:
+                valor=int(self.entrys[0].get())
+                respuesta=messagebox.askquestion("Eliminar","¿Deseas eliminar el registro seleccionado?")
+                if respuesta==messagebox.YES:
+                    self.funciones.delete(self.table,self.id,valor)
+                    messagebox.showinfo("Eliminar",'Elemento eliminado correctamente.')
+                else:
+                    self.limpiar_entrys(self.entrys)
+            except:
+                    messagebox.showinfo("Eliminar",'Formato Incorrecto.')
+
+                
+            
                 
     def metodo_eliminar(self,tabla):
         self.ver_tabla(tabla)
