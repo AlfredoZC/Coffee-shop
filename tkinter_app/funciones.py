@@ -1,5 +1,7 @@
 import pyodbc
 
+from mysql_to_sqlserver.main import sqlserver_config
+
 class Funciones:
     def __init__(self):
         host = "localhost"    
