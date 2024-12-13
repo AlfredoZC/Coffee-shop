@@ -62,6 +62,7 @@ def create_table(mysql_cursor, sqlserver_cursor, table_name):
     sqlserver_query = f"CREATE TABLE {table_name} ( \n" # Query que necesitaremos. para crear la tabla
     columndata = []  #Esta lista nos ayudara a guardar los datos para rellenar el query y crear la tabla
     for column in columns: 
+        
         column_name = column[0]
         column_type = map_mysql_to_sqlserver(column[1])
         nullstuff = "NOT NULL" if column[2] == 'NO'  else "NULL" 

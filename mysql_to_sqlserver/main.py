@@ -24,8 +24,8 @@ try:
 
     sqlserver_config = { #DICCIONARIO CON LOS DATOS DEL USUARIO Y LA BD EN SQLSERVER
         'Driver': 'ODBC Driver 17 for SQL Server',
-        'Server': server2, 
-        'Database':database2, #AdventureWorks2022
+        'Server': server2, #HP
+        'Database':database2, #cafeteria_new
         'Trusted_Connection' : 'yes'   
     }
 
