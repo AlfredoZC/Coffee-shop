@@ -1,4 +1,5 @@
 import migration_functions as migrate
+import FK_connections as FK 
 
 try:
 
@@ -31,6 +32,8 @@ try:
 
     migrate.migrate_mysql_to_sqlserver(mysql_config, sqlserver_config)
     print("")
+    print("Conectando tablas y sus llaves: ")
+    FK.foreing_keys(sqlserver_config)
     print("Migracion exitosa! ")
 
 except Exception as e:

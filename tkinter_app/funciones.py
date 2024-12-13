@@ -1,11 +1,9 @@
 import pyodbc
 
-from mysql_to_sqlserver.main import sqlserver_config
-
 class Funciones:
     def __init__(self):
-        host = "localhost"    
-        database = "cafeteria"  
+        host = "HP"    
+        database = "cafeteria_new"  
         try:
             self.conexion = pyodbc.connect(
                 f'DRIVER={{ODBC Driver 17 for SQL Server}};'
