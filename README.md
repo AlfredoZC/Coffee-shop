@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️--><p align="center">
     
   <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/logo-shadow.png" alt="Logo" width="150" height="150" />
@@ -132,3 +133,6 @@ Una vez aclarado que es una base de datos y haber explicado la funcionalidad del
 ## ➤ License
 	
 Licensed under [MIT](https://opensource.org/licenses/MIT).
+=======
+# APP YOUR DATABASE
+>>>>>>> 745ae48ba4daea4c490361b6dd6ddc3c856d3677
