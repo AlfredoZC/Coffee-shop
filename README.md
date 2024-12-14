@@ -59,19 +59,15 @@
    - Ejecute el archivo principal del proyecto (`interfaz.py`) para iniciar la interfaz gráfica.
 
 ### Uso
--Migrar Base de datos de MYSQL a SQL server
 
-<video width="640" height="360" controls>
-  <source src="Tutorial_de_migración.mp4" type="video/mp4">
-  Tu navegador no soporta el elemento de video.
-</video>
+### - Migrar Base de datos de MySQL a SQL Server
 
--Uso de la interfaz de gestion de BD (Una vez migrada la BD)
+<iframe width="640" height="360" src="https://www.youtube.com/embed/t64yTD24jDM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-<video width="640" height="360" controls>
-  <source src="Tutorial_uso_de_la_interfaz.mp4" type="video/mp4">
-  Tu navegador no soporta el elemento de video.
-</video>
+### - Uso de la interfaz de gestión de BD (Una vez migrada la BD)
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/_LD8SP8mm80" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#getting-started-quick)
 
