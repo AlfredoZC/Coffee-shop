@@ -62,11 +62,12 @@
 
 ### - Migrar Base de datos de MySQL a SQL Server
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/t64yTD24jDM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Alt text](https://img.youtube.com/vi/t64yTD24jDM/0.jpg)](https://www.youtube.com/watch?v=t64yTD24jDM)
+
 
 ### - Uso de la interfaz de gestión de BD (Una vez migrada la BD)
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/_LD8SP8mm80" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Alt text](https://img.youtube.com/vi/_LD8SP8mm80/0.jpg)](https://www.youtube.com/watch?v=_LD8SP8mm80)
 
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#getting-started-quick)
