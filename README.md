@@ -1,11 +1,8 @@
-<<<<<<< HEAD
+
 <!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️--><p align="center">
     
   <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/logo-shadow.png" alt="Logo" width="150" height="150" />
   
-  
-
-
 <p align="center">
   <b>YOUR DATABASE (coffee shop!) </b></br>
   <sub>Este programa te permite migrar datos de una base de datos MySQL a una base de datos SQL Server de manera eficiente, garantizando que la estructura y las relaciones entre tablas se mantengan intactas mediante un script en python. Ademas desarrollamos una interfaz de gestion que permite al usuario gestionar las tablas de la Base de datos SQL Server de manera visual!!!   <sub>
@@ -102,8 +99,6 @@
 
 
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/dark.png)
-
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#contributors)
 
@@ -113,19 +108,17 @@
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#contributors)
 
-![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/dark.png)
 
 ## ➤ JUSTIFICACION DEL PROYECTO
-Una vez aclarado que es una base de datos y haber explicado la funcionalidad del codigo. Podria decirse que el programa es una base de datos?. Como se menciono es un PROTOTIPO de base de datos, si bien no estamos haciendo uso de SQL, si estamos almacenando los datos de forma SISTEMATICA y podemos acceder a ellos comodamente atraves de comandos. Por lo que si, esta implementacion puede llamarse base de datos, cuida la integridad de los datos, es sistematico y puede ser escalable. 
+Si bien se puede realizar el procces
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/dark.png)
 
 ## ➤ Contributors
 	
 
-|  
-                                                            |
-| [Jose Alfredo](https://github.com/AlfredoZC)           |
-| [Oly Emanuel](https://github.com/OlyEmanuel)                                                         
+                                                            
+ [Jose Alfredo](https://github.com/AlfredoZC)           
+ [Oly Emanuel](https://github.com/nicosnz)                                                         
 
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#license)
@@ -134,5 +127,4 @@ Una vez aclarado que es una base de datos y haber explicado la funcionalidad del
 	
 Licensed under [MIT](https://opensource.org/licenses/MIT).
 =======
-# APP YOUR DATABASE
->>>>>>> 745ae48ba4daea4c490361b6dd6ddc3c856d3677
+
