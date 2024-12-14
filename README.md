@@ -110,7 +110,7 @@
 
 
 ## ➤ JUSTIFICACION DEL PROYECTO
-Si bien se puede realizar el procces
+Si bien se puede realizar el proceso de migración mediante herramientas que te provee el mismo gestor de BD, la idea de este proyecto es aplicar los conocimientos aprendidos tanto en BD I como en Programación I.
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/dark.png)
 
 ## ➤ Contributors
