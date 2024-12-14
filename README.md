@@ -107,7 +107,8 @@
 
 
 ## ➤ JUSTIFICACION DEL PROYECTO
-Si bien se puede realizar el proceso de migración mediante herramientas que te provee el mismo gestor de BD, la idea de este proyecto es aplicar los conocimientos aprendidos tanto en BD I como en Programación I.
+La empresa enfrenta problemas con su sistema actual de gestión de datos, que es lento, poco confiable y genera errores. Esto afecta la toma de decisiones y la eficiencia en el trabajo. El objetivo de este proyecto es crear un nuevo sistema más eficiente y confiable, basado en una base de datos relacional y una aplicación en Python. Este sistema será fácil de usar, escalable y permitirá gestionar los datos de manera efectiva. Además, se implementarán procedimientos almacenados para asegurar que los datos se mantengan correctos y consistentes. Si bien existen herramientas para realizar la migracion de la BD, la idea es poner en practica lo aprendido en BD I y Programación I este semestre!!
+
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/dark.png)
 
 ## ➤ Contributors
