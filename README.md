@@ -115,6 +115,9 @@ La empresa enfrenta problemas con su sistema actual de gestión de datos, que es
 ## ➤ DEFENSA NICOLAS EMANUEL OLY SANCHEZ
 [Defensa](Defensa/README.md)
 
+![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/dark.png)
+
+
 ## ➤ Contributors
 	
 
