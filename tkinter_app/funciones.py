@@ -2,8 +2,8 @@ import pyodbc
 
 class Funciones:
     def __init__(self):
-        host = "HP"    
-        database = "cafeteria_new"  
+        host = "localhost"    
+        database = "cafeteria"  
         try:
             self.conexion = pyodbc.connect(
                 f'DRIVER={{ODBC Driver 17 for SQL Server}};'

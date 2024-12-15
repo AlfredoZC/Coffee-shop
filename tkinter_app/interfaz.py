@@ -1,15 +1,19 @@
+import os
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-from funciones import *
+from tkinter_app.funciones import *
+from Defensa.es_palindromo import *
+from Defensa.update_tabla_clientes  import *
 
+path_icono = os.path.join(os.path.dirname(__file__), "coffee-cup.ico")
 class Interfaz(Frame):
     funciones=Funciones()
     def __init__(self, master = None):
         super().__init__(master, bg = "#6F4E37", height = 400, width = 840)
         self.master=master
         self.master.resizable(False,False)
-        self.master.iconbitmap("coffee-cup.ico")
+        self.master.iconbitmap(path_icono)
         self.pack()
         self.objetos()
         self.master.protocol("WM_DELETE_WINDOW", self.cerrar_ventana)
@@ -50,21 +54,38 @@ class Interfaz(Frame):
 
     #metodos de las interfaces
     def ver_tabla(self,tabla):
-        datos=self.funciones.select(tabla)
         columnas=self.funciones.describe(tabla)
         
+        #PARTE DE LA DEFENSA
+        if tabla=='clientes':
+            lista=[]
+            lista_ids=[]
+            columnas_nombres_clientes=obtener_nombres(tabla)
+            
+            ids=self.funciones.select(tabla)
+            
+            for x in ids:
+                lista_ids.append(x[0])
+            
+            for x in columnas_nombres_clientes:
+                lista.append(x[0])
+            
+            nombres_minusculas = [nombre.lower() for nombre in lista]
+            resultado_palindromo=verificar_palindromos(nombres_minusculas)
+            insertar_valores_palindromo(lista_ids,resultado_palindromo)
+        
+        datos_tabla_seleccionada=self.funciones.select(tabla)
         
         self.vista_database['columns']=columnas
         for x in columnas:
             self.vista_database.column(x,width=120,anchor=CENTER)
             self.vista_database.heading(x,text=x,anchor=CENTER)
         self.vista_database['show']='headings'
-        
         #limpiar tabla cada vez que se active el metodo ver_tabla
         if self.ver_tabla:
             self.limpiar_database()
 
-        for dato in (datos):
+        for dato in (datos_tabla_seleccionada):
             if (len(columnas)<=4):
                 self.vista_database.insert("", END, values=(dato[0],dato[1],dato[2],dato[3]))
             else:
@@ -78,6 +99,11 @@ class Interfaz(Frame):
         self.limpiar_formulario()
         self.columnas_agregar = self.funciones.describe(tabla)
         self.columnas_agregar.pop(0)
+        
+        #ULTIMA PARTE DE LA DEFENSA
+        if tabla =="clientes":
+            self.columnas_agregar.pop(len(self.columnas_agregar)-1)
+
         
         total_columnas=len(self.columnas_agregar)
         
