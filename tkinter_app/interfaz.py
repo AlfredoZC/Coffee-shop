@@ -2,9 +2,9 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 from funciones import *
+
 class Interfaz(Frame):
     funciones=Funciones()
-    
     def __init__(self, master = None):
         super().__init__(master, bg = "#6F4E37", height = 400, width = 840)
         self.master=master
@@ -17,6 +17,7 @@ class Interfaz(Frame):
     def cerrar_ventana(self):
         self.funciones.cerrar_conexion()
         self.master.destroy()
+
     def elemento_vacio(self,cadena):
         for x in cadena:
             if not x:
@@ -42,7 +43,6 @@ class Interfaz(Frame):
     def limpiar_formulario(self):
         for widget in self.Formulario.winfo_children():
             widget.destroy()
-    
     def limpiar_entrys(self,entrys):
         for i in entrys:
             i.delete(0,END)
@@ -78,6 +78,7 @@ class Interfaz(Frame):
         self.limpiar_formulario()
         self.columnas_agregar = self.funciones.describe(tabla)
         self.columnas_agregar.pop(0)
+        
         total_columnas=len(self.columnas_agregar)
         
         self.labels=[]
@@ -163,8 +164,6 @@ class Interfaz(Frame):
        
         menu=OptionMenu(self.Formulario,self.cur,*columnas_modificar)
         menu.place(x=42,y=50)
-        
-        
         
         
         label2 = Label(self.Formulario, text="Nuevo Valor")
