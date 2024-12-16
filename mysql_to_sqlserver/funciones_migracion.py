@@ -1,4 +1,4 @@
-import connection
+import mysql_to_sqlserver.connection_sql as connection_sql
 
 class Table:
     def __init__(self, name : str, columns : list, rows : list):
@@ -83,11 +83,11 @@ def migrate_mysql_to_sqlserver(mysql_config, sqlserver_config):
     try:
         #Conexion a mysql
         print("conectandose a mysql")
-        mysql_connection =  connection.mysql_connection(mysql_config)
+        mysql_connection =  connection_sql.mysql_connection(mysql_config)
         mysql_cursor = mysql_connection.cursor()
         #Conexion a sqlserver
         print("conectandose a sqlserver")
-        sqlserver_connection = connection.sqlserver_connection(sqlserver_config)
+        sqlserver_connection = connection_sql.sqlserver_connection(sqlserver_config)
         sqlserver_cursor = sqlserver_connection.cursor()
 
         tables = [] # Esto almacenara objetos tipo Table

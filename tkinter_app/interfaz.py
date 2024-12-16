@@ -2,7 +2,7 @@ import os
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
-from tkinter_app.funciones import *
+from tkinter_app.conexion_sql import *
 from Defensa.es_palindromo import *
 from Defensa.update_tabla_clientes  import *
 

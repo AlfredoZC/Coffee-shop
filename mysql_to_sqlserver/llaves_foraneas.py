@@ -1,8 +1,8 @@
-import connection
+import mysql_to_sqlserver.connection_sql as connection_sql
 
 def foreing_keys(sqlserver_config):
     try:
-        sqlserver_connection = connection.sqlserver_connection(sqlserver_config)
+        sqlserver_connection = connection_sql.sqlserver_connection(sqlserver_config)
         sqlserver_cursor = sqlserver_connection.cursor()
         
         query = [ """ALTER TABLE pedidos 

@@ -1,5 +1,5 @@
-import migration_functions as migrate
-import FK_connections as FK 
+import mysql_to_sqlserver.funciones_migracion as migrate
+import mysql_to_sqlserver.llaves_foraneas as FK 
 
 try:
 

@@ -1,4 +1,4 @@
-from tkinter_app.funciones import *
+from tkinter_app.conexion_sql import *
 
 conexion_base_de_datos=Funciones()
 
